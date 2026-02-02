@@ -70,7 +70,6 @@ def score_event_helper(event_result, event_guess):
 
     points = correct_country_points + incorrect_country_points + bonus_points
     scoring_log = "Scored " + str(points) + " from MEDAL/RESULT/GUESS(POINTS): " + ", ".join([medal_str[:1] + "/" + event_result[medal_str] + "/" + event_guess[medal_str] + "(" + str(guess_to_points_dict[event_guess[medal_str]]) + ")" for medal_str in reversed(MEDAL_STRS)]) + ", BONUS(" + str(bonus_points) + ")"
-    print(scoring_log)
 
     return [scoring_log, points]
 
@@ -132,16 +131,20 @@ def format_event_guess(event_guess):
 
 def score_event(event_result, event_guess_raw):
     max_score = None
+    max_score_log = None
     event_guess = format_event_guess(event_guess_raw)
     for event_result_permutation in get_result_permutations(event_result):
-        [log, new_score] = score_event_helper(event_result_permutation, event_guess)
+        [new_score_log, new_score] = score_event_helper(event_result_permutation, event_guess)
         if max_score is None or new_score > max_score:
             max_score = new_score
-    return ["", max_score]
+            max_score_log = new_score_log
+    return max_score_log, max_score
 
 
 def score_events(result_data, guess_data):
     # Check if result has data yet
+    total_score = 0
+    total_score_delta = 0
     for event, event_result in result_data.items():
         event_guess = guess_data[event]
         
@@ -150,14 +153,21 @@ def score_events(result_data, guess_data):
             continue
         # If there are results, check if we've already scored it
         if event_guess[SCORE_STR] != "":
+            score = int(event_guess[SCORE_STR])
+            total_score = total_score + score
             continue
 
         [scoring_log, score] = score_event(result_data[event], event_guess)
-        
+
+        if score > 0:
+            print(scoring_log)
+
+        total_score = total_score + score
+        total_score_delta = total_score_delta + score
         # Update the guess_data dict
         event_guess[SCORE_STR] = str(score)
 
-    return guess_data
+    return total_score, total_score_delta, guess_data
 
 
 def parse_args(raw_args):
@@ -224,7 +234,10 @@ def main():
     result_data = parse_csv(result_path)
     guess_data = parse_guess_csv(guess_path)
 
-    updated_guess_data = score_events(result_data, copy.deepcopy(guess_data))
+    total_score, total_score_delta, updated_guess_data = score_events(result_data, copy.deepcopy(guess_data))
+
+    print("Total score: " + str(total_score))
+    print("Total score delta: " + str(total_score_delta))
 
     if guess_data == updated_guess_data:
         print("No updates")
