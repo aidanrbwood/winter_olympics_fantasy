@@ -3,6 +3,7 @@ import argparse as ap
 import pathlib as plib
 import sys
 import copy
+import datetime
 
 EVENT_STR = 'Event'
 GENDER_STR = 'Gender'
@@ -145,6 +146,20 @@ def write_csv(filepath, data):
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for event, event_data in data.items():
+            # De-listify
+            if len(event_data[GOLD_STR]) > 0:
+                assert len(event_data[GOLD_STR]) == 1, str(event_data[GOLD_STR]) + str(type(event_data[GOLD_STR]))
+                assert len(event_data[SILVER_STR]) == 1
+                assert len(event_data[BRONZE_STR]) == 1
+                event_data[GOLD_STR] = event_data[GOLD_STR][0]
+                event_data[SILVER_STR] = event_data[SILVER_STR][0]
+                event_data[BRONZE_STR] = event_data[BRONZE_STR][0]
+            else:
+                event_data[GOLD_STR] = None
+                event_data[SILVER_STR] = None
+                event_data[BRONZE_STR] = None
+
+
             writer.writerow(event_data) 
 
 def main():
@@ -160,7 +175,14 @@ def main():
     if guess_data == updated_guess_data:
         print("No updates")
     else:
-        new_guess_path = guess_path.with_name(guess_path.stem + "_updated").with_suffix(guess_path.suffix)
+        today_str = str(datetime.date.today()).replace("-", "_")
+        current_name = guess_path.stem
+        if "_updated_" in current_name:
+            new_name = current_name[:current_name.find("_updated_")] + "_updated_" + today_str
+        else:
+            new_name = current_name + "_updated_" + today_str
+
+        new_guess_path = guess_path.with_name(new_name).with_suffix(guess_path.suffix)
         write_csv(new_guess_path, updated_guess_data)
     
 
