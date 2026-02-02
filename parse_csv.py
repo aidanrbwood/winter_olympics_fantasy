@@ -4,6 +4,7 @@ import pathlib as plib
 import sys
 import copy
 import datetime
+import itertools
 
 EVENT_STR = 'Event'
 GENDER_STR = 'Gender'
@@ -17,30 +18,16 @@ SCORE_STR = "Score"
 
 CORRECT_GUESS_POINTS = 4
 
-def handle_ties(event_result, event_guess_raw):
-    event_guess = event_guess_raw.copy()
-
-    if len(event_result[BRONZE_STR]) == 0:
-        event_guess[SILVER_STR] = event_guess[SILVER_STR] + event_guess[BRONZE_STR]
-        event_guess[BRONZE_STR] = []
-    if len(event_result[SILVER_STR]) == 0:
-        event_guess[GOLD_STR] = event_guess[GOLD_STR] + event_guess[SILVER_STR]
-        event_guess[SILVER_STR] = []
-
-    return event_guess
-
 def lookup_medal_from_country(event_data, country):
     for medal in MEDAL_STRS:
         if country in event_data[medal]:
             return medal.replace("_Country", "")
     assert False, "Didn't find: " + country + " in " + str(event_data)
 
-def score_event(event_result, event_guess_raw):
-    assert event_result[EVENT_STR] == event_guess_raw[EVENT_STR]
-    assert event_result[GENDER_STR] == event_guess_raw[GENDER_STR]
-    assert event_result[CLASS_STR] == event_guess_raw[CLASS_STR]
-
-    event_guess = handle_ties(event_result, event_guess_raw)
+def score_event_helper(event_result, event_guess):
+    assert event_result[EVENT_STR] == event_guess[EVENT_STR]
+    assert event_result[GENDER_STR] == event_guess[GENDER_STR]
+    assert event_result[CLASS_STR] == event_guess[CLASS_STR]
 
     incorrect_country_result_list = []
     incorrect_country_guess_list = []
@@ -49,23 +36,17 @@ def score_event(event_result, event_guess_raw):
 
     # Handle perfect scores first, produce lists of incorrect guesses that can then be used to determine near guesses
     for medal_str in MEDAL_STRS:
-        result_countries = event_result[medal_str].copy()
-        guessed_countries = event_guess[medal_str].copy()
+        result_country = event_result[medal_str]
+        guessed_country = event_guess[medal_str]
+        assert isinstance(result_country, str)
+        assert isinstance(guessed_country, str)
 
-
-        if len(result_countries) == 0:
-            assert(len(guessed_countries) == 0)
-            continue
-        
-        for guessed_country in guessed_countries.copy():
-            if guessed_country in result_countries:
-                scoring_log.append("Scored " + str(CORRECT_GUESS_POINTS) + " points for perfect guess " + medal_str.replace("_Country", "") + " for " + guessed_country)
-                points = points + CORRECT_GUESS_POINTS
-                result_countries.remove(guessed_country)
-                guessed_countries.remove(guessed_country)
-
-        incorrect_country_result_list = incorrect_country_result_list + result_countries
-        incorrect_country_guess_list = incorrect_country_guess_list + guessed_countries
+        if guessed_country == result_country:
+            #scoring_log.append("Scored " + str(CORRECT_GUESS_POINTS) + " points for perfect guess " + medal_str.replace("_Country", "") + " for " + guessed_country)
+            points = points + CORRECT_GUESS_POINTS
+        else:
+            incorrect_country_result_list.append(result_country)
+            incorrect_country_guess_list.append(guessed_country)
 
     num_incorrect = len(incorrect_country_guess_list)
     assert(num_incorrect == len(incorrect_country_result_list))
@@ -78,11 +59,79 @@ def score_event(event_result, event_guess_raw):
         # Now we check if any countries that were guessed incorrectly were just in a different medal position
         for incorrect_country_guess in incorrect_country_guess_list:
             if incorrect_country_guess in incorrect_country_result_list:
-                scoring_log.append("Scored 2 points for near guess " + incorrect_country_guess + " was guessed as " + lookup_medal_from_country(event_guess, incorrect_country_guess) + " but was actually " + lookup_medal_from_country(event_result, incorrect_country_guess))
+                #scoring_log.append("Scored 2 points for near guess " + incorrect_country_guess + " was guessed as " + lookup_medal_from_country(event_guess, incorrect_country_guess) + " but was actually " + lookup_medal_from_country(event_result, incorrect_country_guess))
                 points = points + 2
                 incorrect_country_result_list.remove(incorrect_country_guess)
 
+    scoring_log = "Scored " + str(points) + " from MEDAL/RESULT/GUESS: " + ", ".join([medal_str[:1] + "/" + event_result[medal_str] + "/" + event_guess[medal_str] for medal_str in reversed(MEDAL_STRS)])
+    print(scoring_log)
+
     return [scoring_log, points]
+
+def generate_perms(existing_perms, new_perms):
+    if len(new_perms) == 0:
+        return existing_perms
+    if len(existing_perms) == 0:
+        return new_perms
+
+    res = []
+    for existing_perm in existing_perms:
+        for new_perm in new_perms:
+            res.append(existing_perm + new_perm)
+    return res
+
+
+# Handle ties
+# If the results were:
+# Gold: Canada, USA
+# Silver: China
+# Bronze: 
+#
+# Generate the two following permutations, score them both, and then take the highest
+# Gold: Canada
+# Silver: USA
+# Bronze: China
+
+# Gold: USA
+# Silver: Canada
+# Bronze: China
+def get_result_permutations(event_result):
+    perms = []
+
+    for medal_str in reversed(MEDAL_STRS):
+        perms = generate_perms(perms, [list(it) for it in itertools.permutations(event_result[medal_str])])
+
+    print("From: " + str(event_result[GOLD_STR]) + ", " + str(event_result[SILVER_STR]) + ", " + str(event_result[BRONZE_STR]) + " generated: " + str(perms))
+    res = []
+    for perm in perms:
+        assert(len(perm) == 3), str(perm)
+        new_result = event_result.copy()
+        new_result[GOLD_STR] = perm[0]
+        new_result[SILVER_STR] = perm[1]
+        new_result[BRONZE_STR] = perm[2]
+        res.append(new_result)
+
+    return res
+
+def format_event_guess(event_guess):
+    res = event_guess.copy()
+    for medal_str in MEDAL_STRS:
+        assert len(res[medal_str]) <= 1
+        if len(res[medal_str]) == 0:
+            res[medal_str] = "NONE"
+        else:
+            res[medal_str] = res[medal_str][0]
+    return res
+
+
+def score_event(event_result, event_guess_raw):
+    max_score = None
+    event_guess = format_event_guess(event_guess_raw)
+    for event_result_permutation in get_result_permutations(event_result):
+        [log, new_score] = score_event_helper(event_result_permutation, event_guess)
+        if max_score is None or new_score > max_score:
+            max_score = new_score
+    return ["", max_score]
 
 
 def score_events(result_data, guess_data):
@@ -98,7 +147,6 @@ def score_events(result_data, guess_data):
             continue
 
         [scoring_log, score] = score_event(result_data[event], event_guess)
-        print("Score: " + str(score) + " from:\n" + "\n".join(scoring_log) + "\n")
         
         # Update the guess_data dict
         event_guess[SCORE_STR] = str(score)
