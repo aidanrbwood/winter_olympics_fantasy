@@ -145,6 +145,8 @@ def score_events(result_data, guess_data):
     # Check if result has data yet
     total_score = 0
     total_score_delta = 0
+
+    scoring_log = []
     for event, event_result in result_data.items():
         event_guess = guess_data[event]
         
@@ -157,23 +159,24 @@ def score_events(result_data, guess_data):
             total_score = total_score + score
             continue
 
-        [scoring_log, score] = score_event(result_data[event], event_guess)
+        [log, score] = score_event(result_data[event], event_guess)
 
         if score > 0:
-            print(scoring_log)
+            scoring_log = scoring_log + log
 
         total_score = total_score + score
         total_score_delta = total_score_delta + score
         # Update the guess_data dict
         event_guess[SCORE_STR] = str(score)
 
-    return total_score, total_score_delta, guess_data
+    return total_score, total_score_delta, guess_data, scoring_log
 
 
 def parse_args(raw_args):
     parser = ap.ArgumentParser()
     parser.add_argument('result_file')
     parser.add_argument('guess_file')
+    parser.add_argument('out_dir')
     
     return parser.parse_args(raw_args)
 
@@ -226,32 +229,34 @@ def write_csv(filepath, data):
 
             writer.writerow(event_data) 
 
-def main():
-    args = parse_args(sys.argv[1:])
+def main(raw_args):
+    args = parse_args(raw_args)
     result_path = plib.Path(args.result_file).resolve()
     guess_path = plib.Path(args.guess_file).resolve()
+    out_dir = plib.Path(args.out_dir).resolve()
+
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     result_data = parse_csv(result_path)
     guess_data = parse_guess_csv(guess_path)
 
-    total_score, total_score_delta, updated_guess_data = score_events(result_data, copy.deepcopy(guess_data))
+    total_score, total_score_delta, updated_guess_data, scoring_log = score_events(result_data, copy.deepcopy(guess_data))
 
     print("Total score: " + str(total_score))
     print("Total score delta: " + str(total_score_delta))
 
-    if guess_data == updated_guess_data:
-        print("No updates")
-    else:
-        today_str = str(datetime.date.today()).replace("-", "_")
-        current_name = guess_path.stem
-        if "_updated_" in current_name:
-            new_name = current_name[:current_name.find("_updated_")] + "_updated_" + today_str
-        else:
-            new_name = current_name + "_updated_" + today_str
+    today_str = str(datetime.date.today()).replace("-", "_")
+    current_name = guess_path.stem
 
-        new_guess_path = guess_path.with_name(new_name).with_suffix(guess_path.suffix)
-        write_csv(new_guess_path, updated_guess_data)
-    
+    if "_updated_" in current_name:
+        new_name = current_name[:current_name.find("_updated_")] + "_updated_" + today_str
+    else:
+        new_name = current_name + "_updated_" + today_str
+
+    new_guess_path = out_dir.joinpath(new_name).with_suffix(guess_path.suffix)
+    write_csv(new_guess_path, updated_guess_data)
+
+    return total_score, total_score_delta, scoring_log
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
