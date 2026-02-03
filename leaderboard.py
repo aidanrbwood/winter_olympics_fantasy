@@ -48,9 +48,19 @@ def determine_positions(results_dict):
         else if last_counted_score != this_score:
             position = position + 1
 
+    return current_scores_sorted
 
-def print_leaderboard()
 
+def build_leaderboard(current_scores_sorted, results_dict):
+    leaderboard = []
+    for name in current_scores_sorted:
+        current_position = results_dict[name]["current_position"]
+        previous_position = results_dict[name]["previous_position"]
+        position_delta = previous_position - current_position
+
+        leaderboard.append(str(current_position) + ". " + name + "(" + str(position_delta) + ")")
+
+    return leaderboard
 
 def main(raw_args):
     args = parse_args(raw_args)
@@ -64,7 +74,8 @@ def main(raw_args):
     guess_fpaths = [file for file in guess_dpath.glob('*.csv')]
     results_list = [collect_result(result_fpath, guess_fpath, out_dir) for guess_fpath in guess_fpaths]
     results_dict = {res[0]: res[1] for res in results_list}
-    determine_positions(results_dict)
+    current_scores_sorted = determine_positions(results_dict)
+    print(build_leaderboard(current_scores_sorted, results_dict))
 
 
 if __name__ == '__main__':
