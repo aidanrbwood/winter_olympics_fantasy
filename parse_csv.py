@@ -193,7 +193,7 @@ def parse_csv(csv_path):
                 else:
                     row[medal] = row[medal].split(", ")
 
-            key_str = "[" + row[EVENT_STR] + ", " + row[GENDER_STR] + ", " + row[CLASS_STR] + "]"
+            key_str = "[" + row[EVENT_STR].strip().lower() + ", " + row[GENDER_STR].strip().lower() + ", " + row[CLASS_STR].strip().lower() + "]"
             ret_dict[key_str] = row
         return ret_dict
 
