@@ -45,11 +45,11 @@ def score_event_helper(event_result, event_guess):
 
         if guessed_country == result_country:
             correct_country_points = correct_country_points + CORRECT_GUESS_POINTS
-            guess_to_points_dict[guessed_country] = CORRECT_GUESS_POINTS
+            guess_to_points_dict[guessed_country + medal_str] = CORRECT_GUESS_POINTS
         else:
             incorrect_country_result_list.append(result_country)
             incorrect_country_guess_list.append(guessed_country)
-            guess_to_points_dict[guessed_country] = 0
+            guess_to_points_dict[guessed_country + medal_str] = 0
 
     num_incorrect = len(incorrect_country_guess_list)
     assert(num_incorrect == len(incorrect_country_result_list))
@@ -69,7 +69,7 @@ def score_event_helper(event_result, event_guess):
                 guess_to_points_dict[incorrect_country_guess] = CLOSE_GUESS_POINTS
 
     points = correct_country_points + incorrect_country_points + bonus_points
-    scoring_log = "Scored " + str(points) + " from MEDAL/RESULT/GUESS(POINTS): " + ", ".join([medal_str[:1] + "/" + event_result[medal_str] + "/" + event_guess[medal_str] + "(" + str(guess_to_points_dict[event_guess[medal_str]]) + ")" for medal_str in reversed(MEDAL_STRS)]) + ", BONUS(" + str(bonus_points) + ")"
+    scoring_log = "Scored " + str(points) + " from MEDAL/RESULT/GUESS(POINTS): " + ", ".join([medal_str[:1] + "/" + event_result[medal_str] + "/" + event_guess[medal_str] + "(" + str(guess_to_points_dict[event_guess[medal_str] + medal_str]) + ")" for medal_str in reversed(MEDAL_STRS)]) + ", BONUS(" + str(bonus_points) + ")"
 
     return [scoring_log, points]
 
@@ -162,7 +162,7 @@ def score_events(result_data, guess_data):
         [log, score] = score_event(result_data[event], event_guess)
 
         if score > 0:
-            scoring_log = scoring_log + log
+            scoring_log.append(log)
 
         total_score = total_score + score
         total_score_delta = total_score_delta + score
@@ -177,6 +177,7 @@ def parse_args(raw_args):
     parser.add_argument('result_file')
     parser.add_argument('guess_file')
     parser.add_argument('out_dir')
+    parser.add_argument('--no-write', action='store_true')
     
     return parser.parse_args(raw_args)
 
@@ -242,19 +243,10 @@ def main(raw_args):
 
     total_score, total_score_delta, updated_guess_data, scoring_log = score_events(result_data, copy.deepcopy(guess_data))
 
-    print("Total score: " + str(total_score))
-    print("Total score delta: " + str(total_score_delta))
+    new_guess_path = out_dir.joinpath(guess_path.name)
 
-    today_str = str(datetime.date.today()).replace("-", "_")
-    current_name = guess_path.stem
-
-    if "_updated_" in current_name:
-        new_name = current_name[:current_name.find("_updated_")] + "_updated_" + today_str
-    else:
-        new_name = current_name + "_updated_" + today_str
-
-    new_guess_path = out_dir.joinpath(new_name).with_suffix(guess_path.suffix)
-    write_csv(new_guess_path, updated_guess_data)
+    if not args.no_write:
+        write_csv(new_guess_path, updated_guess_data)
 
     return total_score, total_score_delta, scoring_log
 
