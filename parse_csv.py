@@ -25,7 +25,7 @@ def lookup_medal_from_country(event_data, country):
             return medal.replace("_Country", "")
     assert False, "Didn't find: " + country + " in " + str(event_data)
 
-def score_event_helper(event_result, event_guess):
+def score_event_helper(event_result, event_guess, event_name):
     assert event_result[EVENT_STR] == event_guess[EVENT_STR]
     assert event_result[GENDER_STR] == event_guess[GENDER_STR]
     assert event_result[CLASS_STR] == event_guess[CLASS_STR]
@@ -48,7 +48,7 @@ def score_event_helper(event_result, event_guess):
             guess_to_points_dict[guessed_country + medal_str] = CORRECT_GUESS_POINTS
         else:
             incorrect_country_result_list.append(result_country)
-            incorrect_country_guess_list.append(guessed_country)
+            incorrect_country_guess_list.append([guessed_country, medal_str])
             guess_to_points_dict[guessed_country + medal_str] = 0
 
     num_incorrect = len(incorrect_country_guess_list)
@@ -62,14 +62,14 @@ def score_event_helper(event_result, event_guess):
         bonus_points = 8
     else:
         # Now we check if any countries that were guessed incorrectly were just in a different medal position
-        for incorrect_country_guess in incorrect_country_guess_list:
+        for incorrect_country_guess, medal_str in incorrect_country_guess_list:
             if incorrect_country_guess in incorrect_country_result_list:
                 incorrect_country_points = incorrect_country_points + CLOSE_GUESS_POINTS
                 incorrect_country_result_list.remove(incorrect_country_guess)
-                guess_to_points_dict[incorrect_country_guess] = CLOSE_GUESS_POINTS
+                guess_to_points_dict[incorrect_country_guess + medal_str] = CLOSE_GUESS_POINTS
 
     points = correct_country_points + incorrect_country_points + bonus_points
-    scoring_log = "Scored " + str(points) + " from MEDAL/RESULT/GUESS(POINTS): " + ", ".join([medal_str[:1] + "/" + event_result[medal_str] + "/" + event_guess[medal_str] + "(" + str(guess_to_points_dict[event_guess[medal_str] + medal_str]) + ")" for medal_str in reversed(MEDAL_STRS)]) + ", BONUS(" + str(bonus_points) + ")"
+    scoring_log = "Scored " + str(points) + " from " + event_name + ": " + ", ".join([medal_str[:1] + "/" + event_result[medal_str] + "/" + event_guess[medal_str] + "(" + str(guess_to_points_dict[event_guess[medal_str] + medal_str]) + ")" for medal_str in reversed(MEDAL_STRS)]) + ", BONUS(" + str(bonus_points) + ")"
 
     return [scoring_log, points]
 
@@ -129,12 +129,12 @@ def format_event_guess(event_guess):
     return res
 
 
-def score_event(event_result, event_guess_raw):
+def score_event(event_result, event_guess_raw, event_name):
     max_score = None
     max_score_log = None
     event_guess = format_event_guess(event_guess_raw)
     for event_result_permutation in get_result_permutations(event_result):
-        [new_score_log, new_score] = score_event_helper(event_result_permutation, event_guess)
+        [new_score_log, new_score] = score_event_helper(event_result_permutation, event_guess, event_name)
         if max_score is None or new_score > max_score:
             max_score = new_score
             max_score_log = new_score_log
@@ -159,7 +159,7 @@ def score_events(result_data, guess_data):
             total_score = total_score + score
             continue
 
-        [log, score] = score_event(result_data[event], event_guess)
+        [log, score] = score_event(result_data[event], event_guess, event)
 
         if score > 0:
             scoring_log.append(log)
@@ -217,8 +217,8 @@ def write_csv(filepath, data):
             # De-listify
             if len(event_data[GOLD_STR]) > 0:
                 assert len(event_data[GOLD_STR]) == 1, str(event_data[GOLD_STR]) + str(type(event_data[GOLD_STR]))
-                assert len(event_data[SILVER_STR]) == 1
-                assert len(event_data[BRONZE_STR]) == 1
+                assert len(event_data[SILVER_STR]) == 1, str(event_data[SILVER_STR]) + str(type(event_data[SILVER_STR]))
+                assert len(event_data[BRONZE_STR]) == 1, str(event_data[BRONZE_STR]) + str(type(event_data[BRONZE_STR]))
                 event_data[GOLD_STR] = event_data[GOLD_STR][0]
                 event_data[SILVER_STR] = event_data[SILVER_STR][0]
                 event_data[BRONZE_STR] = event_data[BRONZE_STR][0]

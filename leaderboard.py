@@ -95,7 +95,7 @@ def main(raw_args):
     for val in results_dict.values():
         complete_scoring_log = complete_scoring_log + val["scoring_log"]
 
-    print("\n\n\nFull scoring log: ")
+    print("\n\n\nFull scoring log, read results/guess/points as: MEDAL/RESULT/GUESS(POINTS)")
     print("\n".join(complete_scoring_log))
 if __name__ == '__main__':
     main(sys.argv[1:])
