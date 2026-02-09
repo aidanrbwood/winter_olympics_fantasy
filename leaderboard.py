@@ -2,6 +2,7 @@ import argparse as ap
 import pathlib as plib
 import sys
 import parse_csv
+from tabulate import tabulate
 
 def parse_args(raw_args):
     parser = ap.ArgumentParser()
@@ -26,12 +27,12 @@ def collect_result(result_fpath, guess_fpath, out_dir, no_write):
     if no_write:
         parse_csv_flags.append("--no-write")
 
-    total_score, total_score_delta, scoring_log = parse_csv.main(parse_csv_flags)
+    total_score, total_score_delta, scoring_log, event_to_score = parse_csv.main(parse_csv_flags)
     previous_score = total_score - total_score_delta
 
     tagged_scoring_log = [player_name + ": " + log for log in scoring_log]
 
-    return [player_name, {"previous_score": previous_score, "current_score": total_score, "scoring_log": tagged_scoring_log}]
+    return player_name, {"previous_score": previous_score, "current_score": total_score, "scoring_log": tagged_scoring_log, "event_to_score": event_to_score}
 
 
 def determine_positions_helper(results_dict, key_str):
@@ -43,14 +44,12 @@ def determine_positions_helper(results_dict, key_str):
     position = 1
     last_counted_score = None
     for name in scores_sorted:
-        results_dict[name][position_key] = position
         this_score = results_dict[name][score_key]
+        if last_counted_score is not None and last_counted_score != this_score:
+            position = position + 1
 
-        if last_counted_score is None:
-            last_counted_score = this_score 
-            position = position + 1
-        elif last_counted_score != this_score:
-            position = position + 1
+        results_dict[name][position_key] = position
+        last_counted_score = this_score 
 
     return scores_sorted
 
@@ -76,6 +75,45 @@ def build_leaderboard(current_scores_sorted, results_dict):
 
     return leaderboard
 
+
+def condense_event_name(raw_name):
+    sport, gender, sub = raw_name[1:-1].split(", ")
+
+    sport = sport.replace("cross country", "xc")
+    sport = sport.replace("skiing", "ski")
+    sport = sport.replace("snowboarding", "snwboard")
+
+    gender = gender.replace("womens", "w")
+    gender = gender.replace("mens", "m")
+
+    sub = sub.replace("skiathlon", "")
+    sub = sub.replace(" + ", "+")
+
+    return ",".join([sport, gender, sub])
+
+
+def build_table(current_scores_sorted, results_dict):
+    data = [] 
+    events_list = [event for event in sorted(results_dict[current_scores_sorted[0]]["event_to_score"].keys())]
+
+    for event in events_list:
+        scores = [results_dict[name]["event_to_score"][event] for name in current_scores_sorted]
+        data.append([condense_event_name(event)] + scores)
+
+    total_list = ["total"]
+
+    for idx in range(0, len(current_scores_sorted)):
+        day_sum = 0
+        for row in data:
+            day_sum = day_sum + row[idx + 1]
+
+        total_list.append(day_sum)
+
+    data.append(total_list)
+
+    return tabulate(data, headers=["Event"] + current_scores_sorted, tablefmt="fancy_grid")
+
+
 def main(raw_args):
     args = parse_args(raw_args)
 
@@ -90,6 +128,7 @@ def main(raw_args):
     results_dict = {res[0]: res[1] for res in results_list}
     current_scores_sorted = determine_positions(results_dict)
     print("\n".join(build_leaderboard(current_scores_sorted, results_dict)))
+    print(build_table(current_scores_sorted, results_dict))
 
     complete_scoring_log = []
     for val in results_dict.values():
@@ -97,5 +136,7 @@ def main(raw_args):
 
     print("\n\n\nFull scoring log, read results/guess/points as: MEDAL/RESULT/GUESS(POINTS)")
     print("\n".join(complete_scoring_log))
+
+
 if __name__ == '__main__':
     main(sys.argv[1:])

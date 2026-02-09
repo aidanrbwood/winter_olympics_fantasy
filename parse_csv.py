@@ -147,6 +147,7 @@ def score_events(result_data, guess_data):
     total_score_delta = 0
 
     scoring_log = []
+    event_to_score = {}
     for event, event_result in result_data.items():
         event_guess = guess_data[event]
         
@@ -160,6 +161,7 @@ def score_events(result_data, guess_data):
             continue
 
         [log, score] = score_event(result_data[event], event_guess, event)
+        event_to_score[event] = score
 
         if score > 0:
             scoring_log.append(log)
@@ -169,7 +171,7 @@ def score_events(result_data, guess_data):
         # Update the guess_data dict
         event_guess[SCORE_STR] = str(score)
 
-    return total_score, total_score_delta, guess_data, scoring_log
+    return total_score, total_score_delta, guess_data, scoring_log, event_to_score
 
 
 def parse_args(raw_args):
@@ -197,6 +199,7 @@ def parse_csv(csv_path):
             key_str = "[" + row[EVENT_STR].strip().lower() + ", " + row[GENDER_STR].strip().lower() + ", " + row[CLASS_STR].strip().lower() + "]"
             ret_dict[key_str] = row
         return ret_dict
+
 
 def parse_guess_csv(filename):
     guess_data = parse_csv(filename)
@@ -241,14 +244,14 @@ def main(raw_args):
     result_data = parse_csv(result_path)
     guess_data = parse_guess_csv(guess_path)
 
-    total_score, total_score_delta, updated_guess_data, scoring_log = score_events(result_data, copy.deepcopy(guess_data))
+    total_score, total_score_delta, updated_guess_data, scoring_log, event_to_score = score_events(result_data, copy.deepcopy(guess_data))
 
     new_guess_path = out_dir.joinpath(guess_path.name)
 
     if not args.no_write:
         write_csv(new_guess_path, updated_guess_data)
 
-    return total_score, total_score_delta, scoring_log
+    return total_score, total_score_delta, scoring_log, event_to_score
 
 if __name__ == '__main__':
     main(sys.argv[1:])
