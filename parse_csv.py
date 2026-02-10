@@ -83,6 +83,11 @@ def generate_perms(existing_perms, new_perms):
     for existing_perm in existing_perms:
         for new_perm in new_perms:
             res.append(existing_perm + new_perm)
+
+    # In the case of a double+ bronze, theres actually 4 winners, so we need to trim this list
+    for perm in res:
+        if len(perm) > 3:
+            perm.pop()
     return res
 
 
