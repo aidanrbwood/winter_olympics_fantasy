@@ -1,0 +1,117 @@
+Event,Gender,Class,Gold_Country,Silver_Country,Bronze_Country,Score
+Alpine Skiing,Mens,Downhill,Switzerland,Switzerland,Italy,8
+Alpine Skiing,Mens,Super-G,Switzerland,Italy,Norway,4
+Alpine Skiing,Mens,Giant Slalom,Switzerland,Norway,France,
+Alpine Skiing,Mens,Slalom,United States,Norway,Italy,0
+Alpine Skiing,Mens,Team Combined,Switzerland,Italy,United States,
+Alpine Skiing,Womens,Downhill,Italy,Switzerland,Austria,2
+Alpine Skiing,Womens,Super-G,Italy,Switzerland,Austria,
+Alpine Skiing,Womens,Giant Slalom,United States,United States,Switzerland,
+Alpine Skiing,Womens,Slalom,United States,Italy,Switzerland,
+Alpine Skiing,Womens,Team Combined,Italy,United States,Switzerland,2
+Biathalon,Mixed,4x6km Relay,France,Norway,Germany,8
+Biathalon,Mens,20km Individual,Italy,France,Sweden,4
+Biathalon,Womens,15km Individual,France,Germany,Italy,4
+Biathalon,Mens,10km Sprint,France,Italy,Norway,
+Biathalon,Womens,7.5km Sprint,France,Germany,Italy,
+Biathalon,Mens,12.5km Pursuit,France,Italy,Sweden,
+Biathalon,Womens,10km Pursuit,France,Germany,Italy,
+Biathalon,Mens,4x7.5km Relay,Norway,France,Sweden,
+Biathalon,Womens,4x6km Relay,France,Germany,Italy,
+Biathalon,Mens,15km Mass Start,France,Italy,Sweden,
+Biathalon,Womens,12.5km Mass Start,France,Italy,Germany,
+Bobsleigh,Mens,4 person,Germany,Canada,United States,
+Bobsleigh,Mens,2 person,Germany,Switzerland,United States,
+Bobsleigh,Womens,2 person,Germany,United States,Switzerland,
+Bobsleigh,Womens,Monobob,United States,Germany,Switzerland,
+Cross Country Skiing,Womens,10km + 10km Skiathlon,Sweden,United States,Norway,8
+Cross Country Skiing,Mens,10km + 10km Skiathlon,Norway,Sweden,Norway,8
+Cross Country Skiing,Womens,Sprint Classic,Sweden,United States,Norway,4
+Cross Country Skiing,Mens,Sprint Classic,Norway,Norway,Italy,6
+Cross Country Skiing,Womens,10km Interval Start Free,Sweden,Norway,United States,
+Cross Country Skiing,Mens,10km Interval Start Free,Norway,Norway,Sweden,
+Cross Country Skiing,Womens,4x7.5km Relay,Sweden,Norway,United States,
+Cross Country Skiing,Mens,4x7.5km Relay,Norway,Sweden,Finland,
+Cross Country Skiing,Womens,Team Sprint,Sweden,United States,Norway,
+Cross Country Skiing,Mens,Team Sprint,Norway,Sweden,Finland,
+Cross Country Skiing,Womens,50km Mass Start Classic,Sweden,Norway,United States,
+Cross Country Skiing,Mens,50km Mass Start Classic,Norway,Norway,Sweden,
+Curling,Mens,,Great Britain,Canada,Switzerland,
+Curling,Womens,,Canada,Switzerland,Sweden,
+Curling,Mixed,Doubles,Great Britain,Japan,Italy,4
+Figure Skating,Mens,Singles,United States,Japan,Japan,8
+Figure Skating,Womens,Singles,Japan,United States,United States,
+Figure Skating,Mixed,Pairs,Japan,Germany,China,
+Figure Skating,Mixed,Ice Dance,France,United States,Great Britain,8
+Figure Skating,Mixed,Team,United States,Japan,Italy,
+Freestyle Skiing,Womens,Freeski Slopestyle,China,Switzerland,Great Britain,4
+Freestyle Skiing,Mens,Freeski Slopestyle,United States,New Zealand,Canada,4
+Freestyle Skiing,Womens,Moguls,France,Canada,United States,4
+Freestyle Skiing,Mens,Moguls,Canada,France,United States,
+Freestyle Skiing,Womens,Dual Moguls,France,Canada,Japan,
+Freestyle Skiing,Mens,Dual Moguls,Canada,France,Japan,
+Freestyle Skiing,Womens,Freeski Big Air,China,Switzerland,United States,
+Freestyle Skiing,Mens,Freeski Big Air,New Zealand,United States,Canada,
+Freestyle Skiing,Womens,Aerials,China,Australia,Canada,
+Freestyle Skiing,Mens,Aerials,China,Australia,Canada,
+Freestyle Skiing,Womens,Freeski Halfpipe,China,United States,Canada,
+Freestyle Skiing,Mens,Freeski Halfpipe,China,United States,Canada,
+Freestyle Skiing,Womens,Ski Cross,France,Canada,Italy,
+Freestyle Skiing,Mens,Ski Cross,Canada,France,Netherlands,
+Freestyle Skiing,Mixed,Aerials,China,Canada,Australia,
+Ice Hockey,Mens,,Canada,Sweden,United States,
+Ice Hockey,Womens,,United States,Canada,Finland,
+Luge,Mens,Singles,Germany,Austria,United States,8
+Luge,Mens,Doubles,Germany,Austria,Canada,6
+Luge,Womens,Singles,Germany,Austria,United States,8
+Luge,Womens,Doubles,Germany,Austria,Italy,6
+Luge,Mixed,Team Relay,Germany,Austria,Switzerland,
+Nordic combined,Mens,Individual Normal Hill,Germany,Austria,Finland,8
+Nordic combined,Mens,Individual Large Hill,Germany,Austria,Norway,
+Nordic combined,Mens,Team Large Hill,Germany,Austria,Finland,
+Short Track Speed Skating,Mens,500m,Canada,South Korea,China,
+Short Track Speed Skating,Womens,500m,China,South Korea,Canada,
+Short Track Speed Skating,Mens,1000m,South Korea,Canada,China,
+Short Track Speed Skating,Womens,1000m,South Korea,China,Canada,
+Short Track Speed Skating,Mens,1500m,South Korea,South Korea,Canada,
+Short Track Speed Skating,Womens,1500m,South Korea,South Korea,China,
+Short Track Speed Skating,Mens,Relay,Canada,South Korea,China,
+Short Track Speed Skating,Womens,Relay,South Korea,Canada,China,
+Short Track Speed Skating,Mixed,Relay,Canada,South Korea,China,2
+Skeleton,Mens,Singles,Great Britain,China,Great Britain,
+Skeleton,Womens,Singles,Belgium,Austria,United States,
+Skeleton,Mixed,Team,Great Britain,Germany,United States,
+Ski Jumping,Mens,Normal Hill,Slovenia,Japan,Austria,2
+Ski Jumping,Womens,Normal Hill,Slovenia,Japan,Austria,4
+Ski Jumping,Mens,Large Hill,Slovenia,Japan,Austria,
+Ski Jumping,Womens,Large Hill,Slovenia,Japan,Germany,
+Ski Jumping,Mixed,Super Team,Slovenia,Austria,Japan,
+Ski Jumping,Mixed,Team,Slovenia,Japan,Austria,6
+Ski Mountaineering,Mens,Sprint,Spain,France,Switzerland,
+Ski Mountaineering,Womens,Sprint,France,Switzerland,Italy,
+Ski Mountaineering,Mixed,Relay,France,Switzerland,Spain,
+Snowboarding,Mens,Parallel Giant Slalom,Italy,Germany,Czech Republic,0
+Snowboarding,Mens,Cross,Canada,Austria,France,
+Snowboarding,Mens,Halfpipe,Australia,Japan,Japan,
+Snowboarding,Mens,Slopestyle,Canada,Japan,United States,
+Snowboarding,Mens,Big Air,Japan,Canada,United States,4
+Snowboarding,Womens,Parallel Giant Slalom,Germany,Czech Republic,Italy,6
+Snowboarding,Womens,Cross,France,Canada,Italy,
+Snowboarding,Womens,Halfpipe,United States,New Zealand,Japan,
+Snowboarding,Womens,Slopestyle,New Zealand,Japan,Canada,
+Snowboarding,Womens,Big Air,New Zealand,Japan,United States,4
+Snowboarding,Mixed,Team Cross,France,Great Britain,Switzerland,
+Speed Skating,Mens,500m,Netherlands,Netherlands,United States,
+Speed Skating,Mens,1000m,Netherlands,Netherlands,Norway,4
+Speed Skating,Mens,1500m,Netherlands,Norway,Netherlands,
+Speed Skating,Mens,5000m,Netherlands,Norway,Netherlands,2
+Speed Skating,Mens,10000m,Netherlands,Netherlands,Norway,
+Speed Skating,Mens,Mass Start,Netherlands,Belgium,Norway,
+Speed Skating,Mens,Team Pursuit,Netherlands,Norway,United States,
+Speed Skating,Womens,500m,Japan,United States,Netherlands,
+Speed Skating,Womens,1000m,Netherlands,Netherlands,United States,8
+Speed Skating,Womens,1500m,Netherlands,Netherlands,Norway,
+Speed Skating,Womens,3000m,Netherlands,Norway,Netherlands,4
+Speed Skating,Womens,5000m,Netherlands,Norway,Czech Republic,
+Speed Skating,Womens,Mass Start,Netherlands,Netherlands,Norway,
+Speed Skating,Womens,Team Pursuit,Netherlands,Norway,Japan,
