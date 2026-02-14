@@ -12,7 +12,7 @@ Alpine Skiing,Womens,Team Combined,United States,Canada,Finland,2
 Biathalon,Mixed,4x6km Relay,United States,Canada,Finland,0
 Biathalon,Mens,20km Individual,United States,Canada,Finland,0
 Biathalon,Womens,15km Individual,United States,Canada,Finland,0
-Biathalon,Mens,10km Sprint,United States,Canada,Finland,
+Biathalon,Mens,10km Sprint,United States,Canada,Finland,0
 Biathalon,Womens,7.5km Sprint,United States,Canada,Finland,
 Biathalon,Mens,12.5km Pursuit,United States,Canada,Finland,
 Biathalon,Womens,10km Pursuit,United States,Canada,Finland,
@@ -29,7 +29,7 @@ Cross Country Skiing,Mens,10km + 10km Skiathlon,Norway,Canada,Denmark,4
 Cross Country Skiing,Womens,Sprint Classic,Norway,Canada,Denmark,0
 Cross Country Skiing,Mens,Sprint Classic,Norway,Canada,Denmark,4
 Cross Country Skiing,Womens,10km Interval Start Free,Norway,Canada,Denmark,0
-Cross Country Skiing,Mens,10km Interval Start Free,Norway,Canada,Denmark,
+Cross Country Skiing,Mens,10km Interval Start Free,Norway,Canada,Denmark,4
 Cross Country Skiing,Womens,4x7.5km Relay,Norway,Canada,Denmark,
 Cross Country Skiing,Mens,4x7.5km Relay,Norway,Canada,Denmark,
 Cross Country Skiing,Womens,Team Sprint,Norway,Canada,Denmark,
@@ -39,11 +39,11 @@ Cross Country Skiing,Mens,50km Mass Start Classic,Norway,Canada,Denmark,
 Curling,Mens,,Canada,United States,Australia,
 Curling,Womens,,Canada,United States,Australia,
 Curling,Mixed,Doubles,Canada,United States,Australia,4
-Figure Skating,Mens,Singles,United States,Finland,Canada,
+Figure Skating,Mens,Singles,United States,Finland,Canada,0
 Figure Skating,Womens,Singles,United States,Finland,Canada,
 Figure Skating,Mixed,Pairs,United States,Finland,Canada,
 Figure Skating,Mixed,Ice Dance,United States,Finland,Canada,6
-Figure Skating,Mixed,Team,United States,Finland,Canada,
+Figure Skating,Mixed,Team,United States,Finland,Canada,4
 Freestyle Skiing,Womens,Freeski Slopestyle,Canada,United States,Sweden,2
 Freestyle Skiing,Mens,Freeski Slopestyle,Canada,United States,Sweden,4
 Freestyle Skiing,Womens,Moguls,Canada,United States,Sweden,4
@@ -78,7 +78,7 @@ Short Track Speed Skating,Womens,1500m,Kyrgyzstan,Azerbaijan,Belgium,
 Short Track Speed Skating,Mens,Relay,Kyrgyzstan,Azerbaijan,Belgium,
 Short Track Speed Skating,Womens,Relay,Kyrgyzstan,Azerbaijan,Belgium,
 Short Track Speed Skating,Mixed,Relay,Kyrgyzstan,Azerbaijan,Belgium,4
-Skeleton,Mens,Singles,Canada,United States,Finland,
+Skeleton,Mens,Singles,Canada,United States,Finland,0
 Skeleton,Womens,Singles,Canada,United States,Finland,
 Skeleton,Mixed,Team,Canada,United States,Finland,
 Ski Jumping,Mens,Normal Hill,Canada,China,United States,0
@@ -92,11 +92,11 @@ Ski Mountaineering,Womens,Sprint,Canada,United States,Italy,
 Ski Mountaineering,Mixed,Relay,Canada,United States,Italy,
 Snowboarding,Mens,Parallel Giant Slalom,United States,Canada,Japan,0
 Snowboarding,Mens,Cross,United States,Canada,Japan,4
-Snowboarding,Mens,Halfpipe,United States,Canada,Japan,
+Snowboarding,Mens,Halfpipe,United States,Canada,Japan,4
 Snowboarding,Mens,Slopestyle,United States,Canada,Japan,
 Snowboarding,Mens,Big Air,United States,Canada,Japan,2
 Snowboarding,Womens,Parallel Giant Slalom,United States,Canada,Japan,0
-Snowboarding,Womens,Cross,United States,Canada,Japan,
+Snowboarding,Womens,Cross,United States,Canada,Japan,0
 Snowboarding,Womens,Halfpipe,United States,Canada,Japan,6
 Snowboarding,Womens,Slopestyle,United States,Canada,Japan,
 Snowboarding,Womens,Big Air,United States,Canada,Japan,2
@@ -105,7 +105,7 @@ Speed Skating,Mens,500m,Canada,United States,China,
 Speed Skating,Mens,1000m,Canada,United States,China,6
 Speed Skating,Mens,1500m,Canada,United States,China,
 Speed Skating,Mens,5000m,Canada,United States,China,0
-Speed Skating,Mens,10000m,Canada,United States,China,
+Speed Skating,Mens,10000m,Canada,United States,China,0
 Speed Skating,Mens,Mass Start,Canada,United States,China,
 Speed Skating,Mens,Team Pursuit,Canada,United States,China,
 Speed Skating,Womens,500m,Canada,United States,China,
