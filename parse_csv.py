@@ -168,8 +168,7 @@ def score_events(result_data, guess_data):
         [log, score] = score_event(result_data[event], event_guess, event)
         event_to_score[event] = score
 
-        if score > 0:
-            scoring_log.append(log)
+        scoring_log.append(log)
 
         total_score = total_score + score
         total_score_delta = total_score_delta + score
